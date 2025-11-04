@@ -1,12 +1,117 @@
- Monkeypox Skin Lesion Classification Model🌟 Project OverviewThis project implements a custom Convolutional Neural Network (CNN) built with TensorFlow/Keras for the classification of skin lesions, aimed at distinguishing between different classes of images (presumably including "monkeypox" and others, based on the input dataset structure).The model features a custom architecture, utilizes data preprocessing and augmentation techniques, and employs a comprehensive training and evaluation workflow, demonstrating end-to-end deep learning model development.✨ Key FeaturesCustom CNN Architecture: A sequential model with multiple Conv2D and MaxPooling2D layers for robust feature extraction.Data Augmentation: Includes RandomFlip and RandomRotation layers to increase dataset variability and reduce overfitting.Optimized Data Pipeline: Uses tf.data utilities like cache(), shuffle(), and prefetch(tf.data.AUTOTUNE) for efficient input processing during training.Custom Dataset Split: Implements a function (getdatasets) to deterministically split the original image dataset into Training (80%), Validation (10%), and Testing (10%) sets.Model Persistency: Saves the trained model in the Keras format (.keras) for later deployment.🛠️ Technical SpecificationsLibraries & FrameworksPython 3.xTensorFlow/KerasNumPyPandasMatplotlibModel Architecture SummaryThe final model structure is a sequential CNN that performs resizing, augmentation, and then a series of convolutional/pooling steps before classification:Layer (type)Output ShapeParametersResizing (Sequential)(224, 224, 3)0Augmentation (Sequential)(224, 224, 3)0Convolutional Blocks (x6)Reduces spatial dimensionsVariesFlatten(n,)0Dense Layers (x3)Classification HeadVariesOutput Layer (Dense)(4, softmax)VariesNote: The model has multiple convolutional layers with a kernel size of (3,3) and relu activation, followed by (2,2) MaxPooling, which aggressively downsamples the features.Training ParametersEpochs: 180Optimizer: adamLoss Function: sparse_categorical_crossentropyBatch Size: 32 (Default in image_dataset_from_directory)Input Image Size: (224, 224)🏃 Getting Started1. PrerequisitesInstall the necessary Python packages:Bashpip install tensorflow numpy pandas matplotlib
-2. Dataset SetupThe code expects your image data to be organized in a directory named monkeyimages (relative to the script) with subdirectories corresponding to the class names./monkeyimages
+# 🐵 Monkeypox Skin Lesion Classification Model
+
+## 🌟 Project Overview
+This project implements a custom **Convolutional Neural Network (CNN)** built with **TensorFlow/Keras** for the classification of skin lesions, aimed at distinguishing between different classes of images (presumably including "monkeypox" and others, based on the dataset structure).
+
+The model features a custom architecture, utilizes data preprocessing and augmentation techniques, and employs a comprehensive training and evaluation workflow — demonstrating end-to-end deep learning model development.
+
+---
+
+## ✨ Key Features
+
+- **Custom CNN Architecture:** Multiple Conv2D and MaxPooling2D layers for robust feature extraction.
+- **Data Augmentation:** RandomFlip and RandomRotation layers to increase dataset variability and reduce overfitting.
+- **Optimized Data Pipeline:** Uses `tf.data` utilities like `cache()`, `shuffle()`, and `prefetch(tf.data.AUTOTUNE)` for efficient input processing.
+- **Custom Dataset Split:** Function `getdatasets` deterministically splits data into:
+  - Training (80%)
+  - Validation (10%)
+  - Testing (10%)
+- **Model Persistency:** Trained model is saved in Keras format (`.keras`) for deployment.
+
+---
+
+## 🛠️ Technical Specifications
+
+**Libraries & Frameworks:**
+- Python 3.x
+- TensorFlow/Keras
+- NumPy
+- Pandas
+- Matplotlib
+
+**Model Architecture Summary:**
+
+| Layer (Type) | Output Shape | Parameters |
+|---------------|---------------|-------------|
+| Resizing (Sequential) | (224, 224, 3) | 0 |
+| Augmentation (Sequential) | (224, 224, 3) | 0 |
+| Convolutional Blocks (x6) | Reduces spatial dimensions | Varies |
+| Flatten | (n,) | 0 |
+| Dense Layers (x3) | Classification Head | Varies |
+| Output Layer (Dense) | (4, softmax) | Varies |
+
+> Multiple convolutional layers use (3,3) kernels with ReLU activation, followed by (2,2) MaxPooling for downsampling.
+
+---
+
+## ⚙️ Training Parameters
+
+- **Epochs:** 180  
+- **Optimizer:** Adam  
+- **Loss Function:** sparse_categorical_crossentropy  
+- **Batch Size:** 32 (default from `image_dataset_from_directory`)  
+- **Input Image Size:** (224, 224)
+
+---
+
+## 🏃 Getting Started
+
+### 1. Prerequisites
+Install required dependencies:
+
+```bash
+pip install tensorflow numpy pandas matplotlib
+```
+
+### 2. Dataset Setup
+Ensure your dataset is structured as follows:
+
+```
+/monkeyimages
     /Class_A (e.g., Monkeypox)
         img_a1.jpg
         img_a2.jpg
     /Class_B (e.g., Other_Rash)
         img_b1.jpg
         img_b2.jpg
-    ... (up to 4 classes based on the final layer)
-The script automatically detects the class names. (The final dense layer has an output of 4, suggesting 4 distinct classes are expected).3. Run the Training ScriptExecute the script to train the model, evaluate it on the test set, and save the final model:Bashpython <your_script_name>.py
-🔍 Results and EvaluationThe script outputs the overall test score:score= model.evaluate(testds)
-It also generates a plot showing a batch of predictions on the test set, with the following information for each image:Actual ClassPredicted ClassConfidence (as a percentage)🔮 Future ImprovementsImplement Transfer Learning using a pre-trained model like ResNet50 or EfficientNetB0 for potentially better performance and faster convergence.Integrate a Learning Rate Scheduler or Early Stopping callback to optimize training time.Calculate and display more detailed metrics, such as Precision, Recall, and F1-score, for each class.
+    ...
+```
+> The model expects **4 classes** based on its final dense layer.
+
+### 3. Run the Training Script
+
+Run the model training and evaluation:
+
+```bash
+python <your_script_name>.py
+```
+
+---
+
+## 🔍 Results and Evaluation
+
+After training, the script outputs the overall test score:
+
+```python
+score = model.evaluate(testds)
+```
+
+It also visualizes predictions with:
+- **Actual Class**
+- **Predicted Class**
+- **Confidence (% probability)**
+
+---
+
+## 🔮 Future Improvements
+
+- Implement **Transfer Learning** using pre-trained models like **ResNet50** or **EfficientNetB0**.
+- Integrate **Learning Rate Scheduler** or **Early Stopping** callbacks.
+- Compute additional metrics such as **Precision**, **Recall**, and **F1-score** for each class.
+
+---
+
+📁 **Author:** Hamza Sheikh  
+🎓 **Domain:** Deep Learning / Computer Vision  
+💡 **Framework:** TensorFlow / Keras  
+📦 **File Format:** `.keras` for model persistence  
